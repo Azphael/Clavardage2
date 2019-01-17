@@ -13,7 +13,7 @@ import java.time.Instant;
 
 public class TCPClientModel implements Runnable {
 
-    private Socket connection;
+    private static Socket connection;
     private static String chatRoomID;
     private ObjectInputStream inputStream;
     private static ObjectOutputStream outputStream;
@@ -66,7 +66,7 @@ public class TCPClientModel implements Runnable {
             System.out.println("Le type du message est mal précisé.");
         }
         try{
-            if (!this.connection.isClosed()){
+            if (!connection.isClosed()){
                 outputPayload.setTimeStamp(Instant.now());
                 outputStream.writeObject(outputPayload);
                 System.out.println("Message envoyé.");
