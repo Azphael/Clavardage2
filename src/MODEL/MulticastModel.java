@@ -1,7 +1,7 @@
 package MODEL;
 
 import CONTROL.Configuration;
-import CONTROL.UserHandler;
+import CONTROL.UserDataHandler;
 import CONTROL.UserListHandler;
 
 import java.io.*;
@@ -22,7 +22,7 @@ public class MulticastModel implements Runnable {
     private byte[] receivedData = new byte[1024];
     private byte[] dataToSend = new byte[1024];
     private Timer autoSendTimer;
-    private ArrayList<UserHandler>   inFromMulticast;
+    private ArrayList<UserDataHandler>   inFromMulticast;
 
     /**
      * Lancement serveur Multicast
@@ -48,7 +48,7 @@ public class MulticastModel implements Runnable {
             System.out.println("Serveur Multicast : group \"" + multicastGroupName + "\" rejoint.");
 
             // Envoi du premier message de présence à fin de récupération de la liste des connectés
-            ArrayList<UserHandler> fPacket = FirstPacket();
+            ArrayList<UserDataHandler> fPacket = FirstPacket();
             SendUDPPacket(fPacket);
 
             // Lancement du timer d'envoi automatique d'un message de présence
@@ -62,11 +62,11 @@ public class MulticastModel implements Runnable {
                     multicastSocket.receive(inputPacket);
                     System.out.println("Serveur Multicast - Packet Multicast reçu.");
 
-                    // Conversion du DatagramPacket en données ArrayList<UserHandler>
+                    // Conversion du DatagramPacket en données ArrayList<UserDataHandler>
                     byte[] toto = inputPacket.getData();
                     ByteArrayInputStream baois = new ByteArrayInputStream(toto);
                     ObjectInputStream ois = new ObjectInputStream(baois);
-                    inFromMulticast = (ArrayList<UserHandler>) ois.readObject();
+                    inFromMulticast = (ArrayList<UserDataHandler>) ois.readObject();
                     ois.close();
 
                     // Gestion des données reçues
@@ -110,8 +110,8 @@ public class MulticastModel implements Runnable {
      *
      * @return
      */
-    public UserHandler MyLoginDatasFirstContact(){
-        UserHandler myLoginDatasFC = new UserHandler();
+    public UserDataHandler MyLoginDatasFirstContact(){
+        UserDataHandler myLoginDatasFC = new UserDataHandler();
 
         // Renseignement des différents champs du User
         myLoginDatasFC.setUserUniqueID(Configuration.USER_UNIQUE_ID);
@@ -130,9 +130,9 @@ public class MulticastModel implements Runnable {
      * @return
      *
      */
-    public ArrayList<UserHandler> FirstPacket(){
-        UserHandler myUserDatas = MyLoginDatasFirstContact();
-        ArrayList<UserHandler> myLoginDatas = new ArrayList<>();
+    public ArrayList<UserDataHandler> FirstPacket(){
+        UserDataHandler myUserDatas = MyLoginDatasFirstContact();
+        ArrayList<UserDataHandler> myLoginDatas = new ArrayList<>();
 
         // Préparation de la table de login concernant le User
         myLoginDatas = UserListHandler.UserListUpdate(myLoginDatas, myUserDatas);
@@ -146,8 +146,8 @@ public class MulticastModel implements Runnable {
      * @return
      *
      */
-    public UserHandler MyLoginDatasHelloMulticast(){
-        UserHandler myLoginDatasHM = new UserHandler();
+    public UserDataHandler MyLoginDatasHelloMulticast(){
+        UserDataHandler myLoginDatasHM = new UserDataHandler();
 
         // Renseignement des différents champs du packet de présence
         myLoginDatasHM.setUserUniqueID(Configuration.USER_UNIQUE_ID);
@@ -166,9 +166,9 @@ public class MulticastModel implements Runnable {
      * @return
      *
      */
-    public ArrayList<UserHandler> HelloMulticastPacket(){
-        UserHandler helloPacketUser = MyLoginDatasHelloMulticast();
-        ArrayList<UserHandler> helloPacketList = new ArrayList<>();
+    public ArrayList<UserDataHandler> HelloMulticastPacket(){
+        UserDataHandler helloPacketUser = MyLoginDatasHelloMulticast();
+        ArrayList<UserDataHandler> helloPacketList = new ArrayList<>();
 
         // Préparation de la table de login du packet de présence
         helloPacketList = UserListHandler.UserListUpdate(helloPacketList, helloPacketUser);
@@ -183,7 +183,7 @@ public class MulticastModel implements Runnable {
      * @param packet
      *
      */
-    public void SendUDPPacket(ArrayList<UserHandler> packet){
+    public void SendUDPPacket(ArrayList<UserDataHandler> packet){
         try {
             // Conversion du packet de présence en données byte[]
             senderSocket = new DatagramSocket();
@@ -216,7 +216,7 @@ public class MulticastModel implements Runnable {
             @Override
             public void run() {
                 // Le jeu d'instructions est lancé toutes les AUTO_TIMER minutes.
-                ArrayList<UserHandler> autoPacket = HelloMulticastPacket();
+                ArrayList<UserDataHandler> autoPacket = HelloMulticastPacket();
                 SendUDPPacket(autoPacket);
             }
         }, 0, 1000 * 60 * Configuration.MULTICAST_AUTO_TIMER);  // 1000 ms/sec * 60 sec/min * AUTO_TIMER variable.
@@ -229,8 +229,8 @@ public class MulticastModel implements Runnable {
      * @param packet
      *
      */
-    private void GestionInfoMulticast(ArrayList<UserHandler> packet) {
-        UserHandler user = MyLoginDatasHelloMulticast();
+    private void GestionInfoMulticast(ArrayList<UserDataHandler> packet) {
+        UserDataHandler user = MyLoginDatasHelloMulticast();
         Configuration.ONLINE_USER_LIST = packet;
         Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(packet, user );
     }

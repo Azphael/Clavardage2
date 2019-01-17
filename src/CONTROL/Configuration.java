@@ -22,7 +22,7 @@ public class Configuration {
     public static String MULTICAST_LOGSERVER_IP = "";
     public static int MULTICAST_LOGSERVER_PORT = 0;
     public static int MULTICAST_AUTO_TIMER = 5;          // Timer de 5 minutes pour envoi automatique de message multicast de présence
-    public static ArrayList<UserHandler> ONLINE_USER_LIST;
+    public static ArrayList<UserDataHandler> ONLINE_USER_LIST;
 
     /**
      *  Variables pour le TCP

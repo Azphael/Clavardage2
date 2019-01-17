@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.time.Instant;
 
-public class UserHandler implements Serializable {
+public class UserDataHandler implements Serializable {
 
-    public UserHandler() {
+    public UserDataHandler() {
     }
 
     private static final long serialVersionUID = 1L;

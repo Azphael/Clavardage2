@@ -16,9 +16,9 @@ public class UserListHandler implements Serializable {
      * @return
      *
      */
-    public static ArrayList<UserHandler> UserListUpdate(ArrayList<UserHandler> arrayList, UserHandler user) {
-        ArrayList<UserHandler> updateArrayList = arrayList;
-        UserHandler userToAdd = user;
+    public static ArrayList<UserDataHandler> UserListUpdate(ArrayList<UserDataHandler> arrayList, UserDataHandler user) {
+        ArrayList<UserDataHandler> updateArrayList = arrayList;
+        UserDataHandler userToAdd = user;
 
         if (!updateArrayList.contains(userToAdd.getUserUniqueID())) {
             updateArrayList.add(userToAdd);

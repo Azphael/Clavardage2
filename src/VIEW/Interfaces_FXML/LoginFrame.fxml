@@ -25,7 +25,7 @@
             </PasswordField>
             <ImageView id="CompanyLogo_LoginFrame" fitHeight="120.0" fitWidth="150.0" layoutX="41.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                <image>
-                  <Image url="@Images/placeholder_logo_500x400.png" />
+                  <Image url="@../Images/placeholder_logo_500x400.png" />
                </image>
             </ImageView>
             <Label id="CompanyID_LoginFrame" layoutX="190.0" layoutY="70.0" text="YOUR COMPANY NAME" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">

@@ -14,9 +14,9 @@ import java.time.Instant;
 public class TCPClientModel implements Runnable {
 
     private Socket connection;
-    private String chatRoomID;
+    private static String chatRoomID;
     private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    private static ObjectOutputStream outputStream;
     private String sourceFile = Configuration.FILE_TO_UPLOAD;
     private String sourceFilePath = Configuration.PATH_TO_UPLOAD;
     private String textToPrint = null;
@@ -44,7 +44,7 @@ public class TCPClientModel implements Runnable {
      * @param content
      *
      */
-    private void SendPayload(String messageType, String content) {
+    public static void SendPayload(String messageType, String content) {
         PayloadHandler outputPayload = new PayloadHandler();
         outputPayload.setChatRoomID(chatRoomID);
         if (messageType == "FIRST"){
