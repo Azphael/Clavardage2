@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="VIEW.MainFrameController">
+<VBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Clavardage.VIEW.MainFrameController">
   <children>
       <MenuBar id="MenuBar_MainFrame">
         <menus>
@@ -49,17 +49,17 @@
                     <items>
                       <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="310.0">
                            <children>
-                              <ImageView id="UserAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <ImageView id="UserAvatar" fx:id="userIDAvatarImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <image>
-                                    <Image url="@../Images/Avatar.jpg" />
+                                    <Image url="@Images/Avatar.jpg" />
                                  </image>
                               </ImageView>
-                              <Label id="UserIDPseudo_MainFrame" alignment="BOTTOM_LEFT" layoutX="65.0" layoutY="10.0" prefHeight="30.0" text="PSEUDO" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <Label id="UserIDPseudo" fx:id="userIDPseudoLabel" alignment="BOTTOM_LEFT" layoutX="65.0" layoutY="10.0" prefHeight="30.0" text="PSEUDO" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="Verdana Bold" size="24.0" />
                                  </font>
                               </Label>
-                              <Label id="UserIDLastName_MainFrame" layoutX="65.0" layoutY="40.0" prefHeight="20.0" text="NOM Prénom" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                              <Label id="UserIDName" fx:id="userIDNameLabel" layoutX="65.0" layoutY="40.0" prefHeight="20.0" text="NOM Prénom" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
                                  <font>
                                     <Font name="System Bold Italic" size="14.0" />
                                  </font>
@@ -73,56 +73,56 @@
                                     <Font name="System Italic" size="14.0" />
                                  </font>
                               </Label>
-                              <ListView id="OnlineUserList_MainFrame" prefHeight="400.0" prefWidth="275.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />
-                              <Button id="LogOffButton_MainFrame" layoutX="20.0" layoutY="505.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="255.0">
+                              <ListView id="ConnectedUserListView" fx:id="connectedUserList" prefHeight="400.0" prefWidth="275.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />
+                              <Button id="LogOffButton" fx:id="logOff" layoutX="20.0" layoutY="505.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="255.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/25706.jpg" />
+                                          <Image url="@Images/25706.jpg" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding></Button>
-                              <Button id="SetPseudoButton_MainFrame" layoutX="187.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="65.0">
+                              <Button id="RefreshConnectedUserListButton" fx:id="refreshConnectedUserList" layoutX="187.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="65.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/updatearrow_80971.png" />
+                                          <Image url="@Images/updatearrow_80971.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding></Button>
-                              <ComboBox id="SetStatusComboBox_MainFrame" layoutX="64.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="70.0" promptText="Status" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="175.0" />
-                              <Button id="ChatRequestButton_MainFrame" layoutX="245.0" layoutY="463.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="10.0">
+                              <ComboBox id="SetStatusComboBox" fx:id="userIDStatusBox" layoutX="64.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="70.0" promptText="Status" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="175.0" />
+                              <Button id="ChatRequestButton" fx:id="sendChatRequest" layoutX="245.0" layoutY="463.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="10.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/chat.png" />
+                                          <Image url="@Images/chat.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="LogOffButton_MainFrame" layoutX="145.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="120.0">
+                              <Button id="SetPseudoButton" fx:id="setUserIDPseudo" layoutX="145.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="120.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/699419_question_512x512.png" />
+                                          <Image url="@Images/699419_question_512x512.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -138,53 +138,58 @@
         </AnchorPane>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab id="Modele_ChatRoomTab_MainFrame" text="Modele">
+                  <Tab text="VirginTab">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+                <Tab id="ModeleChatRoomTab" fx:id="modeleChatRoomTab" text="ModelTab">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextField id="UserMessageBox_ChatRoomTab_MainFrame" layoutX="62.0" minHeight="45.0" prefHeight="45.0" prefWidth="773.0" promptText="\@Pseudo &gt;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="120.0" />
-                              <TextArea id="WindowsText_ChatRoomTab_MainFrame" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                              <TextField id="UserMessageBox" fx:id="userMessageBox" layoutX="62.0" minHeight="45.0" onKeyPressed="#HandleUserText" prefHeight="45.0" prefWidth="773.0" promptText="\@Pseudo &gt;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="120.0" />
+                              <TextArea id="ChatWallofText" fx:id="chatWallofText" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                               </TextArea>
-                              <Label id="DistantUserID_ChatRoomTab_MainFrame" prefHeight="30.0" prefWidth="500.0" text="\@PSEUDO INTERLOCUTEUR" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <Label id="DistantUserID_ChatRoomTab_MainFrame" fx:id="pseudoInterlocuteur" prefHeight="30.0" prefWidth="500.0" text="\@PSEUDO INTERLOCUTEUR" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="Verdana Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button id="UploadButton_ChatRoomTab_MainFrame" layoutX="905.0" layoutY="615.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="65.0">
+                              <Button id="UploadButton" fx:id="uploadFile" layoutX="905.0" layoutY="615.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="65.0">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/Upload.jpg" />
+                                          <Image url="@Images/Upload.jpg" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                            <Button id="DownloadButton_ChatRoomTab_MainFrame" layoutX="821.0" layoutY="648.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                            <Button id="DownloadButton" fx:id="downloadFile" layoutX="821.0" layoutY="648.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/Download.jpg" />
+                                          <Image url="@Images/Download.jpg" />
                                        </image>
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="ExitChatRoomButton_ChatRoomTab_MainFrame" layoutX="10.0" layoutY="610.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+                              <Button id="ExitChatRoomButton" fx:id="exitChatRoom" layoutX="10.0" layoutY="610.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Images/logout-button-icon-76344.png" />
+                                          <Image url="@Images/logout-button-icon-76344.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
