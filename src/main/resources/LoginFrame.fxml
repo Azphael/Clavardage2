@@ -13,16 +13,6 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <TextField id="LoginUserID" fx:id="loginUser" alignment="CENTER" layoutX="175.0" layoutY="203.0" prefHeight="50.0" prefWidth="250.0" promptText="Login" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="240.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </TextField>
-            <PasswordField id="PasswordUserID" fx:id="passwordUser" alignment="CENTER" layoutX="175.0" layoutY="269.0" prefHeight="50.0" prefWidth="250.0" promptText="****" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="310.0">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </PasswordField>
             <ImageView id="CompanyLogo" fx:id="companyLogo" fitHeight="120.0" fitWidth="150.0" layoutX="41.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                <image>
                   <Image url="@Images/placeholder_logo_500x400.png" />
@@ -38,6 +28,16 @@
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
+            <TextField id="LoginUserID" fx:id="loginUser" alignment="CENTER" layoutX="175.0" layoutY="203.0" prefHeight="50.0" prefWidth="460.0" promptText="Login" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="240.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </TextField>
+            <PasswordField id="PasswordUserID" fx:id="passwordUser" alignment="CENTER" layoutX="175.0" layoutY="269.0" onKeyPressed="#LoginAction" prefHeight="50.0" prefWidth="460.0" promptText="****" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="310.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </PasswordField>
          </children>
       </AnchorPane>
    </children>

@@ -1,8 +1,8 @@
-package Clavardage.MODEL;
+package Clavardage.NETWORK;
 
-import Clavardage.CONTROL.Configuration;
-import Clavardage.CONTROL.UserDataHandler;
-import Clavardage.CONTROL.UserListHandler;
+import Clavardage.MODEL.Configuration;
+import Clavardage.MODEL.UserDataHandler;
+import Clavardage.MODEL.UserListHandler;
 
 import java.io.*;
 import java.net.DatagramPacket;
@@ -10,11 +10,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-public class MulticastModel implements Runnable {
+public class Multicast implements Runnable {
 
     private static MulticastSocket multicastSocket;
     private static DatagramSocket senderSocket;
@@ -63,8 +61,8 @@ public class MulticastModel implements Runnable {
                     System.out.println("Serveur Multicast - Packet Multicast reçu.");
 
                     // Conversion du DatagramPacket en données ArrayList<UserDataHandler>
-                    byte[] toto = inputPacket.getData();
-                    ByteArrayInputStream baois = new ByteArrayInputStream(toto);
+                    byte[] receivedDatas = inputPacket.getData();
+                    ByteArrayInputStream baois = new ByteArrayInputStream(receivedDatas);
                     ObjectInputStream ois = new ObjectInputStream(baois);
                     inFromMulticast = (ArrayList<UserDataHandler>) ois.readObject();
                     ois.close();
@@ -264,13 +262,25 @@ public class MulticastModel implements Runnable {
     /**
      * Gestion des données réceptionnées depuis le serveur multicast
      * --> Mise à jour de la table des utilisateurs connectés au multicast
+     * --> Si plus le dernier connecté, passage de relai
      *
      * @param packet
      *
      */
     private static void GestionInfoMulticast(ArrayList<UserDataHandler> packet) {
-        UserDataHandler user = MyLoginDatasHelloMulticast();
-        Configuration.ONLINE_USER_LIST = packet;
-        Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(packet, user );
+        if (packet.size() == 1){
+            UserDataHandler userToUpdate = packet.get(0);
+            Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(packet, userToUpdate );
+            if ((userToUpdate.getUserPseudo() == null) && (Configuration.MULTICAST_LAST_CONNECTED == true)){
+                System.out.println("Un nouvel arrivant sur le canal multicast: envoi de la liste de connecté et passage de relai du dernier connecté");
+                SendUDPPacket(Configuration.ONLINE_USER_LIST);
+                Configuration.MULTICAST_LAST_CONNECTED = false;
+            }
+        } else {
+            Configuration.ONLINE_USER_LIST.addAll(packet);
+            Set<UserDataHandler> setList = new LinkedHashSet<>(Configuration.ONLINE_USER_LIST);
+            Configuration.ONLINE_USER_LIST.clear();
+            Configuration.ONLINE_USER_LIST.addAll(setList);
+        }
     }
 }

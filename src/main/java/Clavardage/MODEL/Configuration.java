@@ -1,5 +1,6 @@
-package Clavardage.CONTROL;
+package Clavardage.MODEL;
 
+import java.io.File;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -9,10 +10,17 @@ import java.util.ArrayList;
 import static java.net.InetAddress.getByName;
 
 public class Configuration {
+
+    /**
+     * Nom et version de l'application
+     *
+     */
+    public static String APPLICATION_NAME = "ClavAppController 0.1";
+
     /**
      *  Nom de l'entreprise
      */
-    public static String COMPANY_LOGO = "@Images/placeholder_logo_500x400.png";
+    public static File COMPANY_LOGO = new File("@Images/placeholder_logo_500x400.png");
     public static String COMPANY_NAME = "TROLOLO Inc.";
 
     /**
@@ -23,7 +31,8 @@ public class Configuration {
     public static String MULTICAST_LOGSERVER_IP = "";
     public static int MULTICAST_LOGSERVER_PORT = 0;
     public static int MULTICAST_AUTO_TIMER = 5;          // Timer de 5 minutes pour envoi automatique de message multicast de présence
-    public static ArrayList<Clavardage.CONTROL.UserDataHandler> ONLINE_USER_LIST;
+    public static ArrayList<Clavardage.MODEL.UserDataHandler> ONLINE_USER_LIST;
+    public static Boolean MULTICAST_LAST_CONNECTED = true;
 
     /**
      *  Variables pour le TCP
@@ -57,9 +66,10 @@ public class Configuration {
     public static String USER_PWD;
     public static String USER_UNIQUE_ID;
     public static Boolean USER_ADMINRIGHTS;
-    public static String USER_PSEUDO;
+    public static String USER_PSEUDO = null;
     public static String USER_LASTNAME;
     public static String USER_NAME;
+    public static String USER_FULL_NAME = USER_LASTNAME.concat(USER_NAME);
     public static String USER_ONLINESTATUS;
 
     /**
@@ -74,7 +84,7 @@ public class Configuration {
      */
     /*
     protected static boolean LOG_TO_FILE = false;
-    private static String LOG_FILE_PATH = "D:/INSA/IFCI-IR-CT1/COO-POO/POO/Projet Clavardage.ClavardageApp/Prog/temp_tests/";   // Chemin d'accès où placer le fichier historique de conversation
+    private static String LOG_FILE_PATH = "D:/INSA/IFCI-IR-CT1/COO-POO/POO/Projet Clavardage.ClavAppController/Prog/temp_tests/";   // Chemin d'accès où placer le fichier historique de conversation
     private static String LOG_FILE_BASE_NAME = "ChatLog";
     private static String LOG_FILE_ID_NAME = USER_UNIQUE_ID.concat(DISTANT_UNIQUE_ID);
     protected static String LOG_FILE = LOG_FILE_PATH.concat(LOG_FILE_BASE_NAME.concat(LOG_FILE_ID_NAME.concat(".txt")));

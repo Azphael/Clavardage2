@@ -1,4 +1,4 @@
-package Clavardage.CONTROL;
+package Clavardage.MODEL;
 
 import java.io.*;
 import java.util.Base64;
@@ -13,7 +13,7 @@ public class PayloadDataHandler {
      * @return
      *
      */
-    public static String PayloadToString(Clavardage.CONTROL.PayloadHandler payload) {
+    public static String PayloadToString(Clavardage.MODEL.PayloadHandler payload) {
         String convertedByte = Base64.getEncoder().encodeToString(payload.getPayloadData());
         return convertedByte;
     }
@@ -25,7 +25,7 @@ public class PayloadDataHandler {
      * @param message
      * @param payload
      */
-    public static void StringToPayload(String message, Clavardage.CONTROL.PayloadHandler payload){
+    public static void StringToPayload(String message, Clavardage.MODEL.PayloadHandler payload){
         byte[] convertedMessage = Base64.getDecoder().decode(message);
         payload.setPayloadData(convertedMessage);
     }
@@ -37,7 +37,7 @@ public class PayloadDataHandler {
      * @param fileToCreate
      * @param payload
      */
-    public static void PayloadToFile(String fileToCreate, Clavardage.CONTROL.PayloadHandler payload) {
+    public static void PayloadToFile(String fileToCreate, Clavardage.MODEL.PayloadHandler payload) {
         try{
             File downloadFile = new File(fileToCreate);
             FileOutputStream foStream = new FileOutputStream(downloadFile);

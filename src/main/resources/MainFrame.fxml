@@ -81,7 +81,7 @@
                                  <graphic>
                                     <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@Images/25706.jpg" />
+                                          <Image url="@Images/disconnect_logout_exit-512.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -102,7 +102,7 @@
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding></Button>
-                              <ComboBox id="SetStatusComboBox" fx:id="userIDStatusBox" layoutX="64.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="70.0" promptText="Status" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="175.0" />
+                              <ComboBox id="SetStatusComboBox" fx:id="userIDStatusBox" layoutX="64.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#HandleComboBoxAction" prefHeight="45.0" prefWidth="70.0" promptText="Status" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="175.0" />
                               <Button id="ChatRequestButton" fx:id="sendChatRequest" layoutX="245.0" layoutY="463.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="10.0">
                                  <font>
                                     <Font size="10.0" />
@@ -115,7 +115,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="SetPseudoButton" fx:id="setUserIDPseudo" layoutX="145.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="120.0">
+                              <Button id="SetPseudoButton" fx:id="setUserIDPseudo" layoutX="145.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#SetPseudo" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="120.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -182,7 +182,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="ExitChatRoomButton" fx:id="exitChatRoom" layoutX="10.0" layoutY="610.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+                              <Button id="ExitChatRoomButton" fx:id="exitChatRoom" layoutX="10.0" layoutY="610.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ExitChatRoom" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>

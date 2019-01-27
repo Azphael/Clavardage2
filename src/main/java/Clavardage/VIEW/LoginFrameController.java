@@ -1,19 +1,25 @@
 package Clavardage.VIEW;
 
-import Clavardage.CONTROL.Configuration;
-import Clavardage.ClavardageApp;
-import javafx.event.Event;
+import Clavardage.MODEL.Configuration;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginFrameController {
-    ClavardageApp ClavApp = ClavardageApp.GetInstance();
+
+public class LoginFrameController implements Initializable {
 
     public LoginFrameController(){
     }
@@ -30,28 +36,38 @@ public class LoginFrameController {
     @FXML
     protected TextField passwordUser;
 
-
     /**
+     * En validant le mot de passe par la touche "ENTER", lance la procédure de login
      *
      * @param event
      *
      */
-    public void Login(ActionEvent event){
-        Configuration.USER_ID = loginUser.getText();
-        Configuration.USER_PWD = passwordUser.getText();
-        if (Configuration.USER_ID.equals("orocher") && Configuration.USER_PWD.equals("mdp")){
-            System.out.println("Bienvenue " + Configuration.USER_ID);
-        } else {
-            Alert erreurLogin = new Alert(Alert.AlertType.ERROR);
-            erreurLogin.setTitle("ClavApp - Erreur");
-            erreurLogin.setContentText("Login ou Mot de Passe incorrects !");
-            erreurLogin.setHeaderText(null);
-            erreurLogin.showAndWait();
+    public void LoginAction(KeyEvent event) throws IOException {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            Configuration.USER_ID = loginUser.getText();
+            Configuration.USER_PWD = passwordUser.getText();
+            if (Configuration.USER_ID.equals("orocher") && Configuration.USER_PWD.equals("mdp")) { //paramètre provisoire en attendant la mise en place de la BDD d'authentification
+                System.out.println("Bienvenue " + Configuration.USER_ID);
+                Parent mainFrame_parent = FXMLLoader.load(getClass().getResource("/MainFrame.fxml"));
+                Scene mainFrame_scene = new Scene(mainFrame_parent);
+                Stage clavApp_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                clavApp_stage.setTitle(Configuration.APPLICATION_NAME);
+                clavApp_stage.setScene(mainFrame_scene);
+                clavApp_stage.show();
+            } else {
+                Alert erreurLogin = new Alert(Alert.AlertType.ERROR);
+                erreurLogin.setTitle(Configuration.APPLICATION_NAME + " - Message d'Erreur");
+                erreurLogin.setContentText("Login ou Mot de Passe incorrects !");
+                erreurLogin.setHeaderText(null);
+                erreurLogin.showAndWait();
+            }
         }
-
     }
 
-
-
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        companyName.setText(Configuration.COMPANY_NAME);
+        Image companyLogoImage = new Image(Configuration.COMPANY_LOGO.toURI().toString());
+        companyLogo.setImage(companyLogoImage);
+    }
 }

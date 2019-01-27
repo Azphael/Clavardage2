@@ -1,8 +1,8 @@
-package Clavardage.MODEL;
+package Clavardage.NETWORK;
 
-import Clavardage.CONTROL.Configuration;
-import Clavardage.CONTROL.PayloadDataHandler;
-import Clavardage.CONTROL.PayloadHandler;
+import Clavardage.MODEL.Configuration;
+import Clavardage.MODEL.PayloadDataHandler;
+import Clavardage.MODEL.PayloadHandler;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.time.Instant;
 
-public class TCPClientModel implements Runnable {
+public class TCPClient implements Runnable {
 
     private static Socket connection;
     private static String chatRoomID;
@@ -29,7 +29,7 @@ public class TCPClientModel implements Runnable {
      * @throws IOException
      *
      */
-    public TCPClientModel(Socket connection, String chatRoomNbr) throws IOException {
+    public TCPClient(Socket connection, String chatRoomNbr) throws IOException {
         this.connection = connection;
         this.chatRoomID = chatRoomNbr;
         this.outputStream = new ObjectOutputStream(connection.getOutputStream());

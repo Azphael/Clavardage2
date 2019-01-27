@@ -1,6 +1,6 @@
 package Clavardage;
 
-import Clavardage.CONTROL.Configuration;
+import Clavardage.MODEL.Configuration;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,54 +17,27 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root  = FXMLLoader.load(getClass().getResource("/LoginFrame.xml"));
-        primaryStage.setTitle("Clavarnage 0.1");
+        Parent root = null;
+
+        // Ouverture du Frame de login
+        FXMLLoader upFrontGUI  = new FXMLLoader(getClass().getResource("/LoginFrame.fxml"));
+        root = upFrontGUI.load();
+        primaryStage.setTitle(Configuration.APPLICATION_NAME);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
             event.consume();
             closeProgram();
         });
+        ClavAppController.GetInstance().SetStage(primaryStage);
     }
 
     @Override
     public void stop() throws Exception {
-        ClavardageApp.GetInstance().LogOut();
+        ClavAppController.GetInstance().LogOut();
     }
 
     private void closeProgram(){
 
     }
-
-    /**
-     * Creation du Process ID
-     */
-
-
-    /**
-     * Ouverture de la session
-     */
-    public void LogOn(){
-
-    }
-    /**
-     * Fermeture de la session
-     */
-    public void LogOff(){
-    }
-
-    /**
-     * Réception d'un message
-     */
-    public void ReceptionMessage() {
-
-    }
-
-    /**
-     * Envoi d'un message
-     */
-    public void EnvoiMessage(){
-
-    }
-
 }

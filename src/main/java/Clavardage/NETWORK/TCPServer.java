@@ -1,13 +1,13 @@
-package Clavardage.MODEL;
+package Clavardage.NETWORK;
 
-import Clavardage.CONTROL.PayloadHandler;
+import Clavardage.MODEL.PayloadHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class TCPServerModel implements Runnable {
+public class TCPServer implements Runnable {
 
     private static ServerSocket serverSocket;
     private static Socket connection;
@@ -21,7 +21,7 @@ public class TCPServerModel implements Runnable {
     private static FileOutputStream fileOutputStream;
     private static FileInputStream fileInputStream;
 
-    private static HashMap<String, TCPClientModel> activeChatRooms;
+    private static HashMap<String, TCPClient> activeChatRooms;
 
     /**
      * Ouverture du port Serveur
@@ -31,7 +31,7 @@ public class TCPServerModel implements Runnable {
      * @param serverBacklog
      *
      */
-    public TCPServerModel(int serverPort, int serverBacklog) throws IOException {
+    public TCPServer(int serverPort, int serverBacklog) throws IOException {
         serverSocket = new ServerSocket(serverPort, serverBacklog);
         activeChatRooms = new HashMap<>();
     }
@@ -41,14 +41,15 @@ public class TCPServerModel implements Runnable {
      * --> Création d'une ChatRoom à identifiant unique pour la discussion
      *
      */
+    @Override
     public void run() {
         try {
             while(!this.serverSocket.isClosed()) {
                 System.out.println("Serveur en attente de connection ...");
-                connection = serverSocket.accept();
+                connection = this.serverSocket.accept();
                 System.out.println("Connection établie !");
                 chatRoomID = FirstContact(connection);
-                TCPClientModel chatRoom = new TCPClientModel(connection, chatRoomID);
+                TCPClient chatRoom = new TCPClient(connection, chatRoomID);
                 activeChatRooms.put(chatRoomID, chatRoom);
                 new Thread(chatRoom).start();
             }
@@ -66,7 +67,7 @@ public class TCPServerModel implements Runnable {
      */
     public static void ShutdownTCPServer(){
         try{
-            for (TCPClientModel chats : activeChatRooms.values()){
+            for (TCPClient chats : activeChatRooms.values()){
                 chats.ShutdownChatRoom();
             }
             inputStream.close();

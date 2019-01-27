@@ -1,4 +1,4 @@
-package Clavardage.CONTROL;
+package Clavardage.MODEL;
 
 import java.io.Serializable;
 import java.util.ArrayList;
