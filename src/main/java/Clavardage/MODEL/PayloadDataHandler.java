@@ -44,7 +44,7 @@ public class PayloadDataHandler {
             foStream.write(payload.getPayloadData());
             foStream.flush();
             foStream.close();
-            System.out.println("Création du fichier : " + fileToCreate);
+            System.out.println("TCP CLIENT===C Création du fichier : " + fileToCreate);
         }catch(IOException ioException){
             ioException.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class PayloadDataHandler {
             }
         }
         else {
-            System.out.println("Le chemin spécifié ne pointe pas sur un fichier.");
+            System.out.println("TCP CLIENT===C Le chemin spécifié ne pointe pas sur un fichier.");
             payload.setStatus("Error");
         }
     }

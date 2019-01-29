@@ -28,7 +28,6 @@ public class UserListHandler implements Serializable {
             int index = updateArrayList.indexOf(userToAdd.getUserUniqueID());
             updateArrayList.set(index, userToAdd);
         }
-
         return updateArrayList;
     }
 }

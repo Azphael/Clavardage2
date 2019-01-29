@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -29,34 +28,16 @@
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
-            <TextField id="LoginUserID" fx:id="loginUser" alignment="CENTER" layoutX="175.0" layoutY="203.0" prefHeight="50.0" prefWidth="460.0" promptText="Login" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="240.0">
+            <TextField id="LoginUserID" fx:id="loginUser" alignment="CENTER" layoutX="175.0" layoutY="203.0" prefHeight="50.0" prefWidth="460.0" promptText="Login" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="240.0">
                <font>
                   <Font size="24.0" />
                </font>
             </TextField>
-            <PasswordField id="PasswordUserID" fx:id="passwordUser" alignment="CENTER" layoutX="175.0" layoutY="269.0" prefHeight="50.0" prefWidth="460.0" promptText="****" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="310.0">
+            <PasswordField id="PasswordUserID" fx:id="passwordUser" alignment="CENTER" layoutX="175.0" layoutY="269.0" onKeyPressed="#LoginAction" prefHeight="50.0" prefWidth="460.0" promptText="****" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="310.0">
                <font>
                   <Font size="20.0" />
                </font>
             </PasswordField>
-            <Button id="LoginButton" fx:id="loginButton" layoutX="524.0" layoutY="240.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="110.0" AnchorPane.rightAnchor="40.0">
-               <graphic>
-                  <ImageView fitHeight="38.0" fitWidth="38.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/login_user_profile_account-512.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button id="LogoutButton" fx:id="logoutButton" layoutX="524.0" layoutY="310.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
-               <graphic>
-                  <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/logout_user_login_account-512.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
          </children>
       </AnchorPane>
    </children>

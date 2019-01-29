@@ -49,7 +49,7 @@ public class TCPClient implements Runnable {
         outputPayload.setChatRoomID(chatRoomID);
         if (messageType == "FIRST"){
             outputPayload.setMessageType("FIRST");
-            System.out.println("Message de premier contact pour la ChatRoom Nbr " + chatRoomID);
+            System.out.println("TCP CLIENT===C Message de premier contact pour la ChatRoom Nbr " + chatRoomID);
             PayloadDataHandler.StringToPayload(content,outputPayload);  // Content --> Simple message de type "Premier Contact"
         }
         else if (messageType == "TEXT") {
@@ -59,23 +59,23 @@ public class TCPClient implements Runnable {
         }
         else if (messageType == "FILE") {
             outputPayload.setMessageType("FILE");
-            System.out.println("Envoi d'un fichier");
+            System.out.println("TCP CLIENT===C Envoi d'un fichier");
             PayloadDataHandler.FileToPayload(content, outputPayload);   // Content --> nom du fichier et chemin d'accès source complet, soit Configuration.UPLOAD
         }
         else {
-            System.out.println("Le type du message est mal précisé.");
+            System.out.println("TCP CLIENT===C Le type du message est mal précisé.");
         }
         try{
             if (!connection.isClosed()){
                 outputPayload.setTimeStamp(Instant.now());
                 outputStream.writeObject(outputPayload);
-                System.out.println("Message envoyé.");
+                System.out.println("TCP CLIENT===C Message envoyé.");
             }
             else{
-                System.out.println("La connection est fermée !");
+                System.out.println("TCP CLIENT===C La connection est fermée !");
             }
         }catch(IOException ioException){
-            System.out.println("Erreur lors de l'envoi du message !");
+            System.out.println("TCP CLIENT===C Erreur lors de l'envoi du message !");
         }
     }
 
@@ -90,14 +90,14 @@ public class TCPClient implements Runnable {
         String inputMessage = null;
         PayloadHandler inputPayload = payload;
         if (inputPayload.getMessageType() == "FIRST") {
-            System.out.print("Réception du message de premier contact ...");
+            System.out.print("TCP CLIENT===C Réception du message de premier contact ...");
         } else if (inputPayload.getMessageType() == "TEXT") {
             inputMessage = PayloadDataHandler.PayloadToString(inputPayload);
         } else if (inputPayload.getMessageType() == "FILE") {
             PayloadDataHandler.PayloadToFile(Configuration.DOWNLOAD, inputPayload);
-            inputMessage = "Le fichier " + Configuration.FILE_TO_DOWNLOAD + " a été récupéré!";
+            inputMessage = "TCP CLIENT===C Le fichier " + Configuration.FILE_TO_DOWNLOAD + " a été récupéré!";
         } else {
-            System.out.println("Le type du message est mal indiqué.");
+            System.out.println("TCP CLIENT===C Le type du message est mal indiqué.");
         }
         return inputMessage;
     }
@@ -113,7 +113,7 @@ public class TCPClient implements Runnable {
                 textToPrint = GetInputPayload(inputPayload);
             }
         }catch(IOException ioException){
-            System.out.print("Connection avec le serveur perdue !");
+            System.out.print("TCP CLIENT===C Connection avec le serveur perdue !");
         }catch(ClassNotFoundException classNotFoundException){
             classNotFoundException.printStackTrace();
         }
@@ -125,11 +125,15 @@ public class TCPClient implements Runnable {
      */
     public void ShutdownChatRoom(){
         try{
-            this.outputStream.close();
-            this.inputStream.close();
+            if (!(this.outputStream == null)) {
+                this.outputStream.close();
+            }
+            if (!(this.inputStream == null)) {
+                this.inputStream.close();
+            }
             this.connection.close();
         }catch(IOException ioException){
-            System.out.println("Cette ChatRoom est déjà déconnectée !");
+            System.out.println("TCP CLIENT===C Cette ChatRoom est déjà déconnectée !");
         }
     }
 }

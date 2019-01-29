@@ -1,5 +1,6 @@
 package Clavardage.NETWORK;
 
+import Clavardage.MODEL.Configuration;
 import Clavardage.MODEL.PayloadHandler;
 
 import java.io.*;
@@ -7,8 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class TCPServer implements Runnable {
+public class TCPServer extends Thread {
 
+    public static TCPServer uniqueTCPServerInstance;
     private static ServerSocket serverSocket;
     private static Socket connection;
     private static String chatRoomID;
@@ -44,23 +46,34 @@ public class TCPServer implements Runnable {
     @Override
     public void run() {
         try {
-            while(!this.serverSocket.isClosed()) {
-                System.out.println("Serveur en attente de connection ...");
-                connection = this.serverSocket.accept();
-                System.out.println("Connection établie !");
+            while(!serverSocket.isClosed()) {
+                System.out.println("TCP SERVER===S Serveur en attente de connection ...");
+                connection = serverSocket.accept();
+                System.out.println("TCP SERVER===S Connection établie !");
                 chatRoomID = FirstContact(connection);
                 TCPClient chatRoom = new TCPClient(connection, chatRoomID);
                 activeChatRooms.put(chatRoomID, chatRoom);
                 new Thread(chatRoom).start();
             }
         } catch (IOException ioException) {
-            ioException.printStackTrace();
-            System.out.println("Erreur de connection au socket TCP");
+            System.out.println("TCP SERVER===S Erreur de connection au socket TCP");
         }catch (ClassNotFoundException classNotFoundException){
             classNotFoundException.printStackTrace();
         }
     }
 
+    /**
+     * Singleton Instance
+     *
+     * @return
+     *
+     */
+    public static TCPServer getInstance() throws IOException {
+        if (uniqueTCPServerInstance == null){
+            uniqueTCPServerInstance = new TCPServer(Configuration.TCP_SERVER_PORT, Configuration.TCP_SERVER_BACKLOG);
+        }
+        return uniqueTCPServerInstance;
+    }
     /**
      * Arrêt de toutes les ChatRooms et du Serveur
      *
@@ -70,12 +83,16 @@ public class TCPServer implements Runnable {
             for (TCPClient chats : activeChatRooms.values()){
                 chats.ShutdownChatRoom();
             }
-            inputStream.close();
-            outputStream.close();
+            if (!(inputStream == null)) {
+                inputStream.close();
+            }
+            if (!(outputStream == null)) {
+                outputStream.close();
+            }
             serverSocket.close();
-            System.out.println("Le serveur TCP vient de se fermer.");
+            System.out.println("TCP SERVER===S Fermeture du serveur TCP.");
         }catch(IOException ioException){
-            System.out.println("Le serveur TCP " + serverSocket + " est déjà déconnecté !");
+            System.out.println("TCP SERVER===S Le serveur TCP " + serverSocket + " est déjà déconnecté !");
         }
     }
 

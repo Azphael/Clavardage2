@@ -3,7 +3,9 @@ package Clavardage.NETWORK;
 import Clavardage.MODEL.Configuration;
 import Clavardage.MODEL.UserDataHandler;
 import Clavardage.MODEL.UserListHandler;
+import Clavardage.VIEW.MainFrameController;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -12,7 +14,9 @@ import java.net.MulticastSocket;
 import java.time.Instant;
 import java.util.*;
 
-public class Multicast implements Runnable {
+public class Multicast extends Thread {
+
+    public static Multicast uniqueMulticastInstance = null;
 
     private static MulticastSocket multicastSocket;
     private static DatagramSocket senderSocket;
@@ -21,6 +25,7 @@ public class Multicast implements Runnable {
     private static byte[] dataToSend = new byte[1024];
     private static Timer autoSendTimer;
     private static ArrayList<UserDataHandler>   inFromMulticast;
+
 
     /**
      * Lancement serveur Multicast
@@ -31,19 +36,19 @@ public class Multicast implements Runnable {
     public void run(){
         try{
             // Purge de la liste des connectés
-            Configuration.ONLINE_USER_LIST.clear();
+            // Configuration.ONLINE_USER_LIST.clear();
 
             // Récupéraition de l'IP routable
             Configuration.TCP_SERVER_IP = Configuration.MyRoutableIP();
 
             // Ouverture du port d'écoute du serveur multicast
             multicastSocket = new MulticastSocket(Configuration.MULTICAST_PORT);
-            System.out.println("Serveur Multicast créé -> port " + multicastSocket.getPort());
+            System.out.println("MULTICAST====X Serveur Multicast créé -> port " + multicastSocket.getPort());
 
             // Accès au groupe multicast donné
             multicastGroupName = InetAddress.getByName(Configuration.MULTICAST_IP);
             multicastSocket.joinGroup(multicastGroupName);
-            System.out.println("Serveur Multicast : group \"" + multicastGroupName + "\" rejoint.");
+            System.out.println("MULTICAST====X Serveur Multicast : group \"" + multicastGroupName + "\" rejoint.");
 
             // Envoi du premier message de présence à fin de récupération de la liste des connectés
             ArrayList<UserDataHandler> fPacket = FirstPacket();
@@ -58,7 +63,7 @@ public class Multicast implements Runnable {
                 DatagramPacket inputPacket = new DatagramPacket(receivedData, receivedData.length);
                 try {
                     multicastSocket.receive(inputPacket);
-                    System.out.println("Serveur Multicast - Packet Multicast reçu.");
+                    System.out.println("MULTICAST====X Serveur Multicast - Packet Multicast reçu.");
 
                     // Conversion du DatagramPacket en données ArrayList<UserDataHandler>
                     byte[] receivedDatas = inputPacket.getData();
@@ -75,8 +80,21 @@ public class Multicast implements Runnable {
                 }
             }
         }catch(IOException ioException){
-            System.out.println("Erreur Serveur Multicast: " + ioException);
+            System.out.println("MULTICAST====X Erreur Serveur Multicast: " + ioException);
         }
+    }
+
+    /**
+     * Singleton Instance
+     *
+     * @return
+     *
+     */
+    public static Multicast getInstance() {
+        if (uniqueMulticastInstance == null){
+            uniqueMulticastInstance = new Multicast();
+        }
+        return uniqueMulticastInstance;
     }
 
     /**
@@ -101,10 +119,10 @@ public class Multicast implements Runnable {
 
                 // Cloture du port d'écoute du serveur multicast
                 multicastSocket.close();
-                System.out.println("Le serveur multicast vient de se fermer.");
+                System.out.println("MULTICAST====X Le serveur multicast vient de se fermer.");
             }
         } catch(IOException ioException) {
-            System.out.println("Les serveur Multicast " + multicastSocket + " est déjà déconnecté !");
+            System.out.println("MULTICAST====X Les serveur Multicast " + multicastSocket + " est déjà déconnecté !");
         }
     }
 
@@ -118,7 +136,7 @@ public class Multicast implements Runnable {
 
         // Renseignement des différents champs du User
         myLoginDatasFC.setUserUniqueID(Configuration.USER_UNIQUE_ID);
-        myLoginDatasFC.setUserPseudo(null);
+        myLoginDatasFC.setUserPseudo("????");
         myLoginDatasFC.setUserOnlineStatus("ATTENTE DE CONNECTION");
         myLoginDatasFC.setUserTCPServerIP(Configuration.TCP_SERVER_IP);
         myLoginDatasFC.setUserTCPServerPort(Configuration.TCP_SERVER_PORT);
@@ -189,7 +207,7 @@ public class Multicast implements Runnable {
 
         // Renseignement des différents champs du User
         myLogoutDatasLO.setUserUniqueID(Configuration.USER_UNIQUE_ID);
-        myLogoutDatasLO.setUserPseudo(null);
+        myLogoutDatasLO.setUserPseudo("");
         myLogoutDatasLO.setUserOnlineStatus("LOGOUT");
         myLogoutDatasLO.setUserTCPServerIP(null);
         myLogoutDatasLO.setTimeStamp(Instant.now());
@@ -235,10 +253,10 @@ public class Multicast implements Runnable {
             DatagramPacket packetToSend = new DatagramPacket(dataToSend, dataToSend.length, InetAddress.getByName(Configuration.MULTICAST_IP), Configuration.MULTICAST_PORT);
             senderSocket.send(packetToSend);
             senderSocket.close();
-            System.out.println("Envoi du packet UDP.");
+            System.out.println("MULTICAST====X Envoi du packet UDP.");
             
         } catch(IOException ioException){
-            System.out.println("Envoi du packet UDP multicast non effectué !");
+            System.out.println("MULTICAST====X Envoi du packet UDP multicast non effectué !");
         }
     }
 
@@ -253,8 +271,13 @@ public class Multicast implements Runnable {
             @Override
             public void run() {
                 // Le jeu d'instructions est lancé toutes les AUTO_TIMER minutes.
-                ArrayList<UserDataHandler> autoPacket = HelloMulticastPacket();
-                SendUDPPacket(autoPacket);
+                if (Configuration.MULTICAST_LAST_CONNECTED == true){
+                    Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, MyLoginDatasHelloMulticast());
+                    SendUDPPacket(Configuration.ONLINE_USER_LIST);
+                } else {
+                    ArrayList<UserDataHandler> autoPacket = HelloMulticastPacket();
+                    SendUDPPacket(autoPacket);
+                }
             }
         }, 0, 1000 * 60 * Configuration.MULTICAST_AUTO_TIMER);  // 1000 ms/sec * 60 sec/min * AUTO_TIMER variable.
     }
@@ -263,24 +286,35 @@ public class Multicast implements Runnable {
      * Gestion des données réceptionnées depuis le serveur multicast
      * --> Mise à jour de la table des utilisateurs connectés au multicast
      * --> Si plus le dernier connecté, passage de relai
+     * --> Mise à jour de la listeView d'affichage des utilisateurs connectés
      *
      * @param packet
      *
      */
     private static void GestionInfoMulticast(ArrayList<UserDataHandler> packet) {
-        if (packet.size() == 1){
-            UserDataHandler userToUpdate = packet.get(0);
-            Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(packet, userToUpdate );
-            if ((userToUpdate.getUserPseudo() == null) && (Configuration.MULTICAST_LAST_CONNECTED == true)){
-                System.out.println("Un nouvel arrivant sur le canal multicast: envoi de la liste de connecté et passage de relai du dernier connecté");
-                SendUDPPacket(Configuration.ONLINE_USER_LIST);
-                Configuration.MULTICAST_LAST_CONNECTED = false;
-            }
-        } else {
-            Configuration.ONLINE_USER_LIST.addAll(packet);
-            Set<UserDataHandler> setList = new LinkedHashSet<>(Configuration.ONLINE_USER_LIST);
-            Configuration.ONLINE_USER_LIST.clear();
-            Configuration.ONLINE_USER_LIST.addAll(setList);
+        // Cas ou le premier objet UserData de la liste reçue a un Pseudo Anonyme (????) et que le user local était le dernier connecté
+        UserDataHandler userToAdd = packet.get(0);
+        if (userToAdd.getUserPseudo().equals("????") && (!(userToAdd.getUserUniqueID().equals(Configuration.USER_UNIQUE_ID))) && Configuration.MULTICAST_LAST_CONNECTED.equals(true)){
+            System.out.println("MULTICAST====X Un nouvel arrivant sur le canal multicast: envoi de la liste de connecté et passage de relai du dernier connecté");
+            SendUDPPacket(Configuration.ONLINE_USER_LIST);
+            Configuration.MULTICAST_LAST_CONNECTED = false;
         }
+        Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
+
+        // Cas ou le packet reçu contient plus de 2 objets UserData
+        if (packet.size() > 1){
+            for (int i = 1; i < packet.size(); i++){
+                userToAdd = packet.get(i);
+                System.out.println("MULTICAST====X Traitement d'un paquet UDP.");
+                if (!(userToAdd.getUserUniqueID().equals(Configuration.USER_UNIQUE_ID))){
+                    System.out.println("MULTICAST====X Mise à jour de la table des connectés.");
+                    Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
+                } else {
+                    System.out.println("MULTICAST====X Mise à jour de la table des connectés avec les paramètre du user local.");
+                    Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, MyLoginDatasHelloMulticast());
+                }
+            }
+        }
+        MainFrameController.UpdateOnlineUserListView(Configuration.ONLINE_USER_LIST);
     }
 }

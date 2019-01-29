@@ -13,7 +13,6 @@ public class Configuration {
 
     /**
      * Nom et version de l'application
-     *
      */
     public static String APPLICATION_NAME = "ClavAppController 0.1";
 
@@ -31,7 +30,7 @@ public class Configuration {
     public static String MULTICAST_LOGSERVER_IP = "";
     public static int MULTICAST_LOGSERVER_PORT = 0;
     public static int MULTICAST_AUTO_TIMER = 5;          // Timer de 5 minutes pour envoi automatique de message multicast de présence
-    public static ArrayList<Clavardage.MODEL.UserDataHandler> ONLINE_USER_LIST;
+    public static ArrayList<Clavardage.MODEL.UserDataHandler> ONLINE_USER_LIST=new ArrayList<>();
     public static Boolean MULTICAST_LAST_CONNECTED = true;
 
     /**
@@ -66,11 +65,10 @@ public class Configuration {
     public static String USER_PWD;
     public static String USER_UNIQUE_ID;
     public static Boolean USER_ADMINRIGHTS;
-    public static String USER_PSEUDO = null;
+    public static String USER_PSEUDO = "????" ;
     public static String USER_LASTNAME;
     public static String USER_NAME;
-    public static String USER_FULL_NAME = USER_LASTNAME.concat(USER_NAME);
-    public static String USER_ONLINESTATUS;
+    public static String USER_ONLINESTATUS = "CONNECTING";
 
     /**
      *  Variables d'identité du distant User
@@ -90,27 +88,6 @@ public class Configuration {
     protected static String LOG_FILE = LOG_FILE_PATH.concat(LOG_FILE_BASE_NAME.concat(LOG_FILE_ID_NAME.concat(".txt")));
     protected static String LOG_FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
     */
-
-    /**
-     * Variables pour l'interface utilisateur
-     */
-    /*
-    protected static String GUI_BIENVENUE = "Bienvenue sur le salon de discussion de " + ENTREPRISE;
-    protected static String GUI_FORMAT_HEURE = "HH:mm:ss";
-    protected static String GUI_CHOIX_PSEUDO = "Choisissez votre pseudonyme:";
-    protected static String GUI_PSEUDO_ERREUR_INVALIDE = "Ce pseudonyme est déjà utilisé";
-    protected static String GUI_PSEUDO_ERREUR_VIDE = "Votre pseudonyme ne peut être vide.";
-    protected static String GUI_CONFIRMATION_FERMETURE = "Voulez-vous vraiment quitter ?";
-    protected static String GUI_BOUTON_VALIDER = "Valider";
-    protected static String GUI_BOUTON_ANNULER = "Annuler";
-    protected static String GUI_BOUTON_QUITTER = "Quitter";
-    protected static int GUI_LARGEUR = 640;
-    protected static int GUI_HAUTEUR = 480;
-    protected static int GUI_TAILLE_FONT = 14;
-    protected static int GUI_MARGE_CHAT = 10;
-    */
-
-
 
     /**
      *  Renvoi l'adresse IPv4 routable de l'ordinateur Host
