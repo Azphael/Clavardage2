@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -177,6 +178,7 @@ public class MainFrameController implements Initializable {
             Socket connection = new Socket(targetForChat.getUserTCPServerIP(), targetForChat.getUserTCPServerPort());
             TCPClient chatRoom = new TCPClient(connection, newChatRoomID);
             TCPServer.activeChatRooms.put(newChatRoomID, chatRoom);
+            addTab(newChatRoomID);
             new Thread(chatRoom).start();
             System.out.println("TCP CLIENT===C Création de la ChatRoom " + chatRoom);
         } catch (IOException ioExcexption){
@@ -187,6 +189,54 @@ public class MainFrameController implements Initializable {
     /**
      * Controller des TabPanes de la partie Droite du MainFrame
      */
+    @FXML
+    protected TabPane chatRoomTabs;
+
+    @FXML
+    protected FXMLLoader tabFXMLLoader = new FXMLLoader();
+
+    @FXML
+    protected Map<String, Object> chatRoomControllerMap = new HashMap<>();
+
+
+    @FXML
+    protected void addTab(String chatRoomID) {
+        int numTabs = chatRoomTabs.getTabs().size();
+        Tab tab = new Tab("ChatRoom "+(numTabs+1));
+        chatRoomTabs.getTabs().add(tab);
+        tab.setId(chatRoomID);
+        chatRoomTabs.getSelectionModel().clearSelection();
+        tabFXMLLoader.setController(new ChatRoomTabFrameController());
+
+        //Rajout d'une écoute des modification dans la chatRoom
+        chatRoomTabs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+                System.out.println("Tab sélectionnée: " + newValue.getText());
+                if (newValue.getContent() == null){
+                    try{
+                        //Chargement de la forme de la tab
+                        Parent chatRoomFrame = (Parent) tabFXMLLoader.load(this.getClass().getResource("/ChatRoomTabFrame.fxml").openStream());
+                        newValue.setContent(chatRoomFrame);
+                        chatRoomControllerMap.put(newValue.getText(), tabFXMLLoader.getController());
+                    } catch (IOException ioexc){
+                        ioexc.printStackTrace();
+                        System.out.println("Erreur de chargement de la forme de la chatRoom.");
+                    }
+                } else {
+                    Parent chatRoomFrame = (Parent) newValue.getContent();
+                    chatRoomControllerMap.get(newValue.getText());
+                }
+            }
+        });
+    }
+
+    @FXML
+    private void listTabs() {
+        chatRoomTabs.getTabs().forEach(tab -> System.out.println(tab.getText()));
+        System.out.println();
+    }
+
     @FXML
     protected Tab emptyChatRoomTab;
 

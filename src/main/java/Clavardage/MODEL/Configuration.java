@@ -21,12 +21,12 @@ public class Configuration {
      *  Nom de l'entreprise
      */
     public static File COMPANY_LOGO = new File("@Images/placeholder_logo_500x400.png");
-    public static String COMPANY_NAME = "TROLOLO Inc.";
+    public static String COMPANY_NAME = "YOURCOMPANY Inc.";
 
     /**
     *  Variables pour le Multicast
     */
-    public static String MULTICAST_IP = "237.13.13.13";
+    public static String MULTICAST_IP = "224.0.0.13"; //"237.13.13.13";
     public static int MULTICAST_PORT = 13013;
     public static String MULTICAST_LOGSERVER_IP = "";
     public static int MULTICAST_LOGSERVER_PORT = 0;

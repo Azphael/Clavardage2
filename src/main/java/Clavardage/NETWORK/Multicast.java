@@ -10,7 +10,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.time.Instant;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Multicast extends Thread {
@@ -35,7 +36,7 @@ public class Multicast extends Thread {
     public void run(){
         try{
             // Purge de la liste des connectés
-            // Configuration.ONLINE_USER_LIST.clear();
+            Configuration.ONLINE_USER_LIST.clear();
 
             // Récupéraition de l'IP routable
             Configuration.TCP_SERVER_IP = Configuration.MyRoutableIP();
@@ -58,6 +59,10 @@ public class Multicast extends Thread {
 
             // Serveur Multicast en attente de messages entrants
             while(!multicastSocket.isClosed()) {
+                ZonedDateTime zdt = Instant.now().atZone(ZoneId.of("Europe/Paris"));
+                String formattedZDT = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(zdt);
+                System.out.println("MULTICAST====X " + formattedZDT + "X> Waiting for incoming UDP packets...");
+
                 // Réception d'un packet de données entrant
                 DatagramPacket inputPacket = new DatagramPacket(receivedData, receivedData.length);
                 try {

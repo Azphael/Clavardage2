@@ -8,61 +8,56 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" type="Pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Clavardage.VIEW.ChatRoomTabFrameController">
+<AnchorPane id="tabContentModel" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <children>
-            <TextField id="UserMessageBox" fx:id="userMessageBox" layoutX="62.0" maxHeight="-Infinity" minHeight="-Infinity" onKeyPressed="#HandleUserText" prefHeight="45.0" prefWidth="773.0" promptText="\@Pseudo &gt;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="120.0" />
-            <TextArea id="ChatWallofText" fx:id="chatWallofText" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
-               <font>
-                  <Font name="Arial" size="12.0" />
-               </font>
-            </TextArea>
-            <Label id="DistantUserID_ChatRoomTab_MainFrame" fx:id="pseudoInterlocuteur" prefHeight="30.0" prefWidth="500.0" text="\@PSEUDO INTERLOCUTEUR" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
-               <font>
-                  <Font name="Verdana Bold" size="18.0" />
-               </font>
-            </Label>
-            <Button id="UploadButton" fx:id="uploadFile" layoutX="905.0" layoutY="615.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="65.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/Upload.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button id="DownloadButton" fx:id="downloadFile" layoutX="821.0" layoutY="648.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/Download.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button id="ExitChatRoomButton" fx:id="exitChatRoom" layoutX="10.0" layoutY="610.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ExitChatRoom" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/logout-button-icon-76344.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </AnchorPane>
+      <TextField id="UserMessageBox" fx:id="userMessageBox" layoutX="62.0" maxHeight="-Infinity" minHeight="-Infinity" onKeyPressed="#HandleUserText" prefHeight="45.0" prefWidth="773.0" promptText="\@Pseudo &gt;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="120.0" />
+      <TextArea id="ChatWallofText" fx:id="chatWallofText" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font>
+      </TextArea>
+      <Label id="DistantUserID_ChatRoomTab_MainFrame" fx:id="pseudoInterlocuteur" prefHeight="30.0" prefWidth="500.0" text="\@PSEUDO INTERLOCUTEUR" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button id="UploadButton" fx:id="uploadFile" layoutX="905.0" layoutY="615.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="65.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/Upload.jpg" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button id="DownloadButton" fx:id="downloadFile" layoutX="821.0" layoutY="648.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/Download.jpg" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button id="ExitChatRoomButton" fx:id="exitChatRoom" layoutX="10.0" layoutY="610.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ExitChatRoom" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/logout-button-icon-76344.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
-</fx:root>
+</AnchorPane>

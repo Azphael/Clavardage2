@@ -18,12 +18,12 @@
                   <Image url="@Images/placeholder_logo_500x400.png" />
                </image>
             </ImageView>
-            <Label id="CompanyID" fx:id="companyName" layoutX="190.0" layoutY="70.0" text="YOUR COMPANY NAME" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
+            <Label id="CompanyID" fx:id="companyName" layoutX="190.0" layoutY="70.0" text="YOUR COMPANY NAME" wrapText="true" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>
             </Label>
-            <Label id="WelcomeMessage" alignment="CENTER" layoutX="286.0" layoutY="192.0" text="Bienvenue sur le Salon de Clavarnage" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="170.0">
+            <Label id="WelcomeMessage" alignment="CENTER" layoutX="286.0" layoutY="192.0" text="Bienvenue sur le Salon de Clavardage" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="170.0">
                <font>
                   <Font name="System Bold Italic" size="24.0" />
                </font>

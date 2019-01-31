@@ -14,7 +14,11 @@ public class UserDataHandler implements Serializable {
     private String userUniqueID;
     private String userPseudo;
     private String userOnlineStatus;
-    private Instant timeStamp;          // Date en temps UTC en nanosec. Pour avoir la date locale: ZonedDateTime zdt = timeStamp.atZone(ZoneId.of("Europe/Paris"))
+
+    // ZonedDateTime zdt = Instant.now().atZone(ZoneId.of("Europe/Paris"));
+    // String formattedZDT = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(zdt);
+    private Instant timeStamp;
+
     private InetAddress userTCPServerIP;
     private int userTCPServerPort;
 

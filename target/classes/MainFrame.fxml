@@ -134,7 +134,7 @@
                   </SplitPane>
                </children>
         </AnchorPane>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="chatRoomTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                   <Tab id="emptyChatRoom" fx:id="emptyChatRoomTab" text="ChatRoom">
                     <content>

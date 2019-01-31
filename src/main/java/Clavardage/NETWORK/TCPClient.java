@@ -3,6 +3,9 @@ package Clavardage.NETWORK;
 import Clavardage.MODEL.Configuration;
 import Clavardage.MODEL.PayloadDataHandler;
 import Clavardage.MODEL.PayloadHandler;
+import Clavardage.VIEW.MainFrameController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -34,6 +37,7 @@ public class TCPClient implements Runnable {
         this.chatRoomID = chatRoomNbr;
         this.outputStream = new ObjectOutputStream(connection.getOutputStream());
         this.inputStream = new ObjectInputStream(new BufferedInputStream(connection.getInputStream()));
+
         SendPayload("FIRST","Premier Contact");
     }
 
