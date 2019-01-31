@@ -47,6 +47,7 @@ public class TCPClient implements Runnable {
     public static void SendPayload(String messageType, String content) {
         PayloadHandler outputPayload = new PayloadHandler();
         outputPayload.setChatRoomID(chatRoomID);
+        outputPayload.setUserSourceID(Configuration.USER_UNIQUE_ID);
         if (messageType == "FIRST"){
             outputPayload.setMessageType("FIRST");
             System.out.println("TCP CLIENT===C Message de premier contact pour la ChatRoom Nbr " + chatRoomID);
@@ -78,6 +79,7 @@ public class TCPClient implements Runnable {
             System.out.println("TCP CLIENT===C Erreur lors de l'envoi du message !");
         }
     }
+
 
     /**
      * Traitement des données réceptionnées

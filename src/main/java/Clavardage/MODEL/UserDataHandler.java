@@ -41,4 +41,19 @@ public class UserDataHandler implements Serializable {
     public int getUserTCPServerPort() { return userTCPServerPort; }
 
     public void setUserTCPServerPort(int userTCPServerPort) { this.userTCPServerPort = userTCPServerPort; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof UserDataHandler) {
+            UserDataHandler u = (UserDataHandler) o;
+            return u.getUserUniqueID().equals(this.getUserUniqueID());
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "> " + userPseudo + " >-----< status: " + userOnlineStatus + " >";
+    }
 }

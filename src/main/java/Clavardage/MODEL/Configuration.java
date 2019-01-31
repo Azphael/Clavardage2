@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.net.InetAddress.getByName;
 
@@ -30,7 +31,7 @@ public class Configuration {
     public static String MULTICAST_LOGSERVER_IP = "";
     public static int MULTICAST_LOGSERVER_PORT = 0;
     public static int MULTICAST_AUTO_TIMER = 5;          // Timer de 5 minutes pour envoi automatique de message multicast de présence
-    public static ArrayList<Clavardage.MODEL.UserDataHandler> ONLINE_USER_LIST=new ArrayList<>();
+    public static List<UserDataHandler> ONLINE_USER_LIST = new ArrayList<>();
     public static Boolean MULTICAST_LAST_CONNECTED = true;
 
     /**
@@ -68,7 +69,7 @@ public class Configuration {
     public static String USER_PSEUDO = "????" ;
     public static String USER_LASTNAME;
     public static String USER_NAME;
-    public static String USER_ONLINESTATUS = "CONNECTING";
+    public static String USER_ONLINESTATUS = "WAITING TO CONNECT";
 
     /**
      *  Variables d'identité du distant User

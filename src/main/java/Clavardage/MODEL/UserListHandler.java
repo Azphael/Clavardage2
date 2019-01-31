@@ -1,7 +1,7 @@
 package Clavardage.MODEL;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class UserListHandler implements Serializable {
 
@@ -16,18 +16,24 @@ public class UserListHandler implements Serializable {
      * @return
      *
      */
-    public static ArrayList<UserDataHandler> UserListUpdate(ArrayList<UserDataHandler> arrayList, UserDataHandler user) {
-        ArrayList<UserDataHandler> updateArrayList = arrayList;
+    public static List<UserDataHandler> UserListUpdate(List<UserDataHandler> arrayList, UserDataHandler user) {
+        List<UserDataHandler> updateArrayList = arrayList;
         UserDataHandler userToAdd = user;
 
-        if (!updateArrayList.contains(userToAdd.getUserUniqueID())) {
+        int index = -1;
+        for (int i = 0; i < updateArrayList.size(); i++) {
+            if (updateArrayList.get(i).getUserUniqueID().equals(userToAdd.getUserUniqueID())){
+                index = i;
+            }
+        }
+
+        if (index != -1) {
+            updateArrayList.remove(index);
+        }
+        if (!(userToAdd.getUserOnlineStatus() == "LOGOUT")){
             updateArrayList.add(userToAdd);
-            System.out.println();
         }
-        else {
-            int index = updateArrayList.indexOf(userToAdd.getUserUniqueID());
-            updateArrayList.set(index, userToAdd);
-        }
+
         return updateArrayList;
     }
 }

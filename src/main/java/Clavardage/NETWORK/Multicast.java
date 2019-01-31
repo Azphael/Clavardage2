@@ -5,7 +5,6 @@ import Clavardage.MODEL.UserDataHandler;
 import Clavardage.MODEL.UserListHandler;
 import Clavardage.VIEW.MainFrameController;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -24,7 +23,7 @@ public class Multicast extends Thread {
     private static byte[] receivedData = new byte[1024];
     private static byte[] dataToSend = new byte[1024];
     private static Timer autoSendTimer;
-    private static ArrayList<UserDataHandler>   inFromMulticast;
+    private static List<UserDataHandler>   inFromMulticast = new ArrayList<>();
 
 
     /**
@@ -51,7 +50,7 @@ public class Multicast extends Thread {
             System.out.println("MULTICAST====X Serveur Multicast : group \"" + multicastGroupName + "\" rejoint.");
 
             // Envoi du premier message de présence à fin de récupération de la liste des connectés
-            ArrayList<UserDataHandler> fPacket = FirstPacket();
+            List<UserDataHandler> fPacket = FirstPacket();
             SendUDPPacket(fPacket);
 
             // Lancement du timer d'envoi automatique d'un message de présence
@@ -69,7 +68,7 @@ public class Multicast extends Thread {
                     byte[] receivedDatas = inputPacket.getData();
                     ByteArrayInputStream baois = new ByteArrayInputStream(receivedDatas);
                     ObjectInputStream ois = new ObjectInputStream(baois);
-                    inFromMulticast = (ArrayList<UserDataHandler>) ois.readObject();
+                    inFromMulticast = (List<UserDataHandler>) ois.readObject();
                     ois.close();
 
                     // Gestion des données reçues
@@ -108,7 +107,7 @@ public class Multicast extends Thread {
 
             if (!multicastSocket.isClosed()) {
                 // Envoi du message de logout
-                ArrayList<UserDataHandler> lPacket = LastPacket();
+                List<UserDataHandler> lPacket = LastPacket();
                 SendUDPPacket(lPacket);
 
                 // Arrêt de l'écoute du canal multicast
@@ -137,7 +136,7 @@ public class Multicast extends Thread {
         // Renseignement des différents champs du User
         myLoginDatasFC.setUserUniqueID(Configuration.USER_UNIQUE_ID);
         myLoginDatasFC.setUserPseudo("????");
-        myLoginDatasFC.setUserOnlineStatus("ATTENTE DE CONNECTION");
+        myLoginDatasFC.setUserOnlineStatus("WAITING TO CONNECT");
         myLoginDatasFC.setUserTCPServerIP(Configuration.TCP_SERVER_IP);
         myLoginDatasFC.setUserTCPServerPort(Configuration.TCP_SERVER_PORT);
         myLoginDatasFC.setTimeStamp(Instant.now());
@@ -151,9 +150,9 @@ public class Multicast extends Thread {
      * @return
      *
      */
-    public static ArrayList<UserDataHandler> FirstPacket(){
+    public static List<UserDataHandler> FirstPacket(){
         UserDataHandler loginDatasFC = MyLoginDatasFirstContact();
-        ArrayList<UserDataHandler> firstPacketList = new ArrayList<>();
+        List<UserDataHandler> firstPacketList = new ArrayList<>();
 
         // Préparation de la table de login concernant le User
         firstPacketList = UserListHandler.UserListUpdate(firstPacketList, loginDatasFC);
@@ -187,9 +186,9 @@ public class Multicast extends Thread {
      * @return
      *
      */
-    public static ArrayList<UserDataHandler> HelloMulticastPacket(){
+    public static List<UserDataHandler> HelloMulticastPacket(){
         UserDataHandler helloPacketUser = MyLoginDatasHelloMulticast();
-        ArrayList<UserDataHandler> helloPacketList = new ArrayList<>();
+        List<UserDataHandler> helloPacketList = new ArrayList<>();
 
         // Préparation de la table de login du packet de présence
         helloPacketList = UserListHandler.UserListUpdate(helloPacketList, helloPacketUser);
@@ -221,9 +220,9 @@ public class Multicast extends Thread {
      * @return
      *
      */
-    public static ArrayList<UserDataHandler> LastPacket(){
+    public static List<UserDataHandler> LastPacket(){
         UserDataHandler logOutDatas = MyLoginDatasLogout();
-        ArrayList<UserDataHandler> byeByePacketList = new ArrayList<>();
+        List<UserDataHandler> byeByePacketList = new ArrayList<>();
 
         // Préparation de la table de logout
         byeByePacketList = UserListHandler.UserListUpdate(byeByePacketList, logOutDatas);
@@ -238,7 +237,7 @@ public class Multicast extends Thread {
      * @param packet
      *
      */
-    public static void SendUDPPacket(ArrayList<UserDataHandler> packet){
+    public static void SendUDPPacket(List<UserDataHandler> packet){
         try {
             // Conversion du packet de présence en données byte[]
             senderSocket = new DatagramSocket();
@@ -275,7 +274,7 @@ public class Multicast extends Thread {
                     Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, MyLoginDatasHelloMulticast());
                     SendUDPPacket(Configuration.ONLINE_USER_LIST);
                 } else {
-                    ArrayList<UserDataHandler> autoPacket = HelloMulticastPacket();
+                    List<UserDataHandler> autoPacket = HelloMulticastPacket();
                     SendUDPPacket(autoPacket);
                 }
             }
@@ -291,30 +290,44 @@ public class Multicast extends Thread {
      * @param packet
      *
      */
-    private static void GestionInfoMulticast(ArrayList<UserDataHandler> packet) {
-        // Cas ou le premier objet UserData de la liste reçue a un Pseudo Anonyme (????) et que le user local était le dernier connecté
-        UserDataHandler userToAdd = packet.get(0);
-        if (userToAdd.getUserPseudo().equals("????") && (!(userToAdd.getUserUniqueID().equals(Configuration.USER_UNIQUE_ID))) && Configuration.MULTICAST_LAST_CONNECTED.equals(true)){
-            System.out.println("MULTICAST====X Un nouvel arrivant sur le canal multicast: envoi de la liste de connecté et passage de relai du dernier connecté");
-            SendUDPPacket(Configuration.ONLINE_USER_LIST);
-            Configuration.MULTICAST_LAST_CONNECTED = false;
-        }
-        Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
+    private static void GestionInfoMulticast(List<UserDataHandler> packet) {
+        if (!packet.isEmpty()) {
+            for (int i = 0; i < packet.size(); i++) {
+                System.out.println("1 :> " + packet.size() + " - " + packet.get(0).getUserUniqueID() + " - " + packet.get(0).getUserPseudo() + " - " + packet.get(0).getUserOnlineStatus());
+            }
+            // Cas ou le premier objet UserData de la liste reçue a un Pseudo Anonyme (????) et que le user local était le dernier connecté
+            UserDataHandler userToAdd = packet.get(0);
+            if (userToAdd.getUserPseudo().equals("????") && (!(userToAdd.getUserUniqueID().equals(Configuration.USER_UNIQUE_ID))) && Configuration.MULTICAST_LAST_CONNECTED.equals(true)) {
+                System.out.println("MULTICAST====X Un nouvel arrivant sur le canal multicast: envoi de la liste de connecté et passage de relai du dernier connecté");
+                Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
+                SendUDPPacket(Configuration.ONLINE_USER_LIST);
+                Configuration.MULTICAST_LAST_CONNECTED = false;
+            }
+            Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
+            System.out.println("2 :> " + Configuration.ONLINE_USER_LIST.size() + " - " + Configuration.ONLINE_USER_LIST.get(0).getUserUniqueID() + " - " + Configuration.ONLINE_USER_LIST.get(0).getUserPseudo() + " - " + Configuration.ONLINE_USER_LIST.get(0).getUserOnlineStatus());
 
-        // Cas ou le packet reçu contient plus de 2 objets UserData
-        if (packet.size() > 1){
-            for (int i = 1; i < packet.size(); i++){
-                userToAdd = packet.get(i);
-                System.out.println("MULTICAST====X Traitement d'un paquet UDP.");
-                if (!(userToAdd.getUserUniqueID().equals(Configuration.USER_UNIQUE_ID))){
-                    System.out.println("MULTICAST====X Mise à jour de la table des connectés.");
-                    Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
-                } else {
+            // Cas ou le packet reçu contient plus de 2 objets UserData
+            if (packet.size() > 1) {
+                for (int i = 1; i < packet.size(); i++) {
+                    userToAdd = packet.get(i);
+                    System.out.println("MULTICAST====X Traitement d'un paquet UDP.");
+                    if (!(userToAdd.getUserUniqueID().equals(Configuration.USER_UNIQUE_ID))) {
+                        System.out.println("MULTICAST====X Mise à jour de la table des connectés.");
+                        Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, userToAdd);
+                    }
                     System.out.println("MULTICAST====X Mise à jour de la table des connectés avec les paramètre du user local.");
                     Configuration.ONLINE_USER_LIST = UserListHandler.UserListUpdate(Configuration.ONLINE_USER_LIST, MyLoginDatasHelloMulticast());
+
+                    System.out.println("3 :> " + Configuration.ONLINE_USER_LIST.size() + " - " + Configuration.ONLINE_USER_LIST.get(i).getUserUniqueID() + " - " + Configuration.ONLINE_USER_LIST.get(i).getUserPseudo() + " - " + Configuration.ONLINE_USER_LIST.get(i).getUserOnlineStatus());
                 }
             }
+            for (int i = 0; i < Configuration.ONLINE_USER_LIST.size(); i++) {
+                System.out.println("4 :> " + Configuration.ONLINE_USER_LIST.size() + " - " + Configuration.ONLINE_USER_LIST.get(i).getUserUniqueID() + " - " + Configuration.ONLINE_USER_LIST.get(i).getUserPseudo() + " - " + Configuration.ONLINE_USER_LIST.get(i).getUserOnlineStatus());
+            }
+
+            // MainFrameController.UpdateOnlineUserListView();
+        } else {
+            System.out.println("5 :> Packet vide");
         }
-        MainFrameController.UpdateOnlineUserListView(Configuration.ONLINE_USER_LIST);
     }
 }

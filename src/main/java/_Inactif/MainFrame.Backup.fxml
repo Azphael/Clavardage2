@@ -11,6 +11,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -71,7 +73,7 @@
                                     <Font name="System Italic" size="14.0" />
                                  </font>
                               </Label>
-                              <ListView id="ConnectedUserListView" fx:id="connectedUserList" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="275.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />
+                              <ListView id="ConnectedUserListView" fx:id="connectedUserList" prefHeight="400.0" prefWidth="275.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />
                               <Button id="LogOffButton" fx:id="logOff" layoutX="20.0" layoutY="505.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#LogOut" prefHeight="45.0" prefWidth="45.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="255.0">
                                  <font>
                                     <Font size="10.0" />
@@ -101,7 +103,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding></Button>
                               <ComboBox id="SetStatusComboBox" fx:id="userIDStatusBox" layoutX="64.0" layoutY="587.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#HandleComboBoxAction" prefHeight="45.0" prefWidth="70.0" promptText="Status" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="175.0" />
-                              <Button id="ChatRequestButton" fx:id="sendChatRequest" layoutX="245.0" layoutY="463.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnButtonActionSendChatRequest" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="10.0">
+                              <Button id="ChatRequestButton" fx:id="sendChatRequest" layoutX="245.0" layoutY="463.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="10.0">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
@@ -136,11 +138,66 @@
         </AnchorPane>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                  <Tab id="emptyChatRoom" fx:id="emptyChatRoomTab" text="ChatRoom">
+                  <Tab text="VirginTab">
                     <content>
                       <AnchorPane disable="true" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
+                <Tab id="ModeleChatRoomTab" fx:id="modeleChatRoomTab" text="ModelTab">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TextField id="UserMessageBox" fx:id="userMessageBox" layoutX="62.0" minHeight="45.0" onKeyPressed="#HandleUserText" prefHeight="45.0" prefWidth="773.0" promptText="\@Pseudo &gt;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="120.0" />
+                              <TextArea id="ChatWallofText" fx:id="chatWallofText" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                              </TextArea>
+                              <Label id="DistantUserID_ChatRoomTab_MainFrame" fx:id="pseudoInterlocuteur" prefHeight="30.0" prefWidth="500.0" text="\@PSEUDO INTERLOCUTEUR" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <font>
+                                    <Font name="Verdana Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button id="UploadButton" fx:id="uploadFile" layoutX="905.0" layoutY="615.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="65.0">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@Images/Upload.jpg" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                            <Button id="DownloadButton" fx:id="downloadFile" layoutX="821.0" layoutY="648.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@Images/Download.jpg" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button id="ExitChatRoomButton" fx:id="exitChatRoom" layoutX="10.0" layoutY="610.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#ExitChatRoom" prefHeight="45.0" prefWidth="45.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@Images/logout-button-icon-76344.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
               </tabs>
             </TabPane>
       </items>

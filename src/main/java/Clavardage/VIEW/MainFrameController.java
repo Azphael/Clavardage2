@@ -5,6 +5,8 @@ import Clavardage.MODEL.UserDataHandler;
 import Clavardage.NETWORK.Multicast;
 import Clavardage.NETWORK.TCPClient;
 import Clavardage.NETWORK.TCPServer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,20 +18,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainFrameController implements Initializable {
 
     protected Boolean pseudoSet = false;
+    protected Multicast serviceMulticast;
+    protected TCPServer serviceTCPServer;
+
 
     public MainFrameController() {
         super();
@@ -48,46 +50,45 @@ public class MainFrameController implements Initializable {
     protected Label userIDNameLabel;
 
     @FXML
-    public static ListView<UserDataHandler> connectedUserList = new ListView<>();
+    protected ListView<UserDataHandler> connectedUserList = new ListView<>();
 
     @FXML
-    protected static ObservableList<UserDataHandler> listViewDatas;
+    protected ObservableList<UserDataHandler> observableOnlineUserList;
 
     /**
-     * Méthode permettant de préparer la liste des personnes connectées à partir de l'élément UserList
+     * Methode de mise à jour de la liste des personnes connectées
      *
-     * @param userList
+     * @return
      *
      */
     @FXML
-    public static ListView<UserDataHandler> PrepareOnlineUserList(ArrayList<UserDataHandler> userList) {
-        listViewDatas = FXCollections.observableArrayList();
-        for (int i = 1; i < userList.size(); i++) {
-            listViewDatas.add(userList.get(i));
-        }
-        connectedUserList.setItems(listViewDatas);
-        return connectedUserList;
-    }
-
-    /**
-     * Méthode permettant de mettre à jour le listView avec les dernièrs datas données en paramètre
-     *
-     * @param userList
-     *
-     */
-    @FXML
-    public static void UpdateOnlineUserListView(ArrayList<UserDataHandler> userList){
-        PrepareOnlineUserList(userList).setCellFactory(param -> new ListCell<UserDataHandler>() {
+    public ListView UpdateOnlineUserListView(){
+        connectedUserList.getItems().clear();
+        observableOnlineUserList = FXCollections.observableArrayList(Configuration.ONLINE_USER_LIST);
+        connectedUserList.setItems(observableOnlineUserList);
+        connectedUserList.setCellFactory(new Callback<ListView<UserDataHandler>, ListCell<UserDataHandler>>() {
             @Override
-            protected void updateItem(UserDataHandler user, boolean empty) {
-                super.updateItem(user, empty);
-                if (empty || user == null || user.getUserPseudo().isEmpty() || user.getUserOnlineStatus().isEmpty()) {
-                    setText(null);
-                } else {
-                    setText(user.getUserPseudo() + " - " + user.getUserOnlineStatus());
-                }
+            public ListCell<UserDataHandler> call(ListView<UserDataHandler> param) {
+                ListCell<UserDataHandler> cell = new ListCell<UserDataHandler>(){
+                    @Override
+                    protected void updateItem(UserDataHandler user, boolean empty){
+                        super.updateItem(user, empty);
+                        if (user != null){
+                            setText(user.toString());
+                        }
+                    }
+                };
+                return cell;
             }
         });
+        // Ajout d'un listener pour récupérer les informations du user sélectionné
+        connectedUserList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<UserDataHandler>() {
+            @Override
+            public void changed(ObservableValue<? extends UserDataHandler> observable, UserDataHandler oldValue, UserDataHandler newValue) {
+                targetForChat = newValue;
+            }
+        });
+        return connectedUserList;
     }
 
     @FXML
@@ -104,7 +105,7 @@ public class MainFrameController implements Initializable {
     private void HandleComboBoxAction() {
         String selectedStatus = userIDStatusBox.getSelectionModel().getSelectedItem();
         Configuration.USER_ONLINESTATUS = selectedStatus;
-        ArrayList<UserDataHandler> updateStatusPacket = Multicast.HelloMulticastPacket();
+        List<UserDataHandler> updateStatusPacket = Multicast.HelloMulticastPacket();
         Multicast.SendUDPPacket(updateStatusPacket);
     }
 
@@ -132,7 +133,9 @@ public class MainFrameController implements Initializable {
             if (result.isPresent() && (!(result.equals("????")))) {
                 Configuration.USER_PSEUDO = result.get();
                 if (!Configuration.ONLINE_USER_LIST.contains(Configuration.USER_PSEUDO)){
-                    ArrayList<UserDataHandler> updatePseudoPacket = Multicast.HelloMulticastPacket();
+                    UpdateOnlineUserListView();
+                    Configuration.USER_ONLINESTATUS = "ONLINE";
+                    List<UserDataHandler> updatePseudoPacket = Multicast.HelloMulticastPacket();
                     Multicast.SendUDPPacket(updatePseudoPacket);
                     userIDPseudoLabel.setText(Configuration.USER_PSEUDO);
                     pseudoSet = true;
@@ -158,74 +161,36 @@ public class MainFrameController implements Initializable {
 
     @FXML
     protected void OnButtonActionUpdateListView(ActionEvent event){
-        UpdateOnlineUserListView(Configuration.ONLINE_USER_LIST);
+        UpdateOnlineUserListView();
     }
-
 
     @FXML
     protected Button sendChatRequest;
+
+    protected UserDataHandler targetForChat = new UserDataHandler();
+
+    @FXML
+    protected void OnButtonActionSendChatRequest(){
+        String targetUserID = targetForChat.getUserUniqueID();
+        String newChatRoomID = Configuration.USER_UNIQUE_ID + "-" + targetUserID;
+        try {
+            Socket connection = new Socket(targetForChat.getUserTCPServerIP(), targetForChat.getUserTCPServerPort());
+            TCPClient chatRoom = new TCPClient(connection, newChatRoomID);
+            TCPServer.activeChatRooms.put(newChatRoomID, chatRoom);
+            new Thread(chatRoom).start();
+            System.out.println("TCP CLIENT===C Création de la ChatRoom " + chatRoom);
+        } catch (IOException ioExcexption){
+            System.out.println("TCP CLIENT===C Erreur de connexion au TCPServer ciblé.");
+        }
+    }
 
     /**
      * Controller des TabPanes de la partie Droite du MainFrame
      */
     @FXML
-    protected Tab modeleChatRoomTab;
+    protected Tab emptyChatRoomTab;
 
-    @FXML
-    protected Label pseudoInterlocuteur;
 
-    @FXML
-    protected TextArea chatWallofText;
-
-    @FXML
-    protected Button exitChatRoom;
-
-    @FXML
-    protected void ExitChatRoom(){
-
-    }
-
-    @FXML
-    protected TextField userMessageBox;
-
-    @FXML
-    protected Button uploadFile;
-
-    @FXML
-    protected Button downloadFile;
-
-    public void ClickUserList(){
-    }
-
-    public void ClickRefresh(){
-    }
-
-    /**
-     * Envoi le texte du userMessageBox par appui sur la touche "Entrée"
-     *
-     * @param keyEvent
-     *
-     */
-    @FXML
-    public void HandleUserText(KeyEvent keyEvent){
-        if ((userMessageBox.getText() != null && !userMessageBox.getText().isEmpty() && keyEvent.getCode() == KeyCode.ENTER)){
-            String userMessage = userMessageBox.getText();
-            TCPClient.SendPayload("Text", userMessage);
-            userMessageBox.setText("");
-        }
-    }
-
-    public void HandleUserUpload(){
-
-    }
-
-    public void HandleUserDownload(){
-
-    }
-
-    public void PopulateOnlineUserListView(){
-
-    }
 
     /**
      * Méthode de logout de la fenêtre de clavardage principale avec retour à la fenêtre de login
@@ -268,8 +233,13 @@ public class MainFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Lancement du thread unique Multicast
+        serviceMulticast = Multicast.getInstance();
         Multicast.getInstance().start();
+
+        // Lancement du thread unique TCPServer
         try {
+            serviceTCPServer = TCPServer.getInstance();
             TCPServer.getInstance().start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -278,12 +248,15 @@ public class MainFrameController implements Initializable {
         userIDPseudoLabel.setText(Configuration.USER_PSEUDO);
         userIDNameLabel.setText(Configuration.USER_LASTNAME + " " + Configuration.USER_NAME);
 
+        // Mise en place du comboBox de status
         comboBoxData.add("ONLINE");
         comboBoxData.add("BUSY");
         comboBoxData.add("AFK");
         userIDStatusBox.setItems(comboBoxData);
         userIDStatusBox.setValue("ONLINE");
 
-        UpdateOnlineUserListView(Configuration.ONLINE_USER_LIST);
+        // Mise en place de la liste des utilisaterus connectés
+        UpdateOnlineUserListView();
+
     }
 }

@@ -10,10 +10,10 @@ public class PayloadHandler implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String userSourceID = null;
-    private String userDestinationID = null;
+    private String userSourceID;
+    private String userDestinationID;
     private Instant timeStamp;                  // Date prise en temps UTC en nanosec. Pour avoir la date locale: ZonedDateTime zdt = timeStamp.atZone(ZoneId.of("Europe/Paris"))
-    private String chatRoomID = null;
+    private String chatRoomID = "";
     private String messageType = null;
 
     private long payloadSize;

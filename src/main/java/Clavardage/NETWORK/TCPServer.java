@@ -23,7 +23,7 @@ public class TCPServer extends Thread {
     private static FileOutputStream fileOutputStream;
     private static FileInputStream fileInputStream;
 
-    private static HashMap<String, TCPClient> activeChatRooms;
+    public static HashMap<String, TCPClient> activeChatRooms;
 
     /**
      * Ouverture du port Serveur
@@ -112,7 +112,8 @@ public class TCPServer extends Thread {
         PayloadHandler firstPayload = (PayloadHandler) firstInputStream.readObject();
 
         // Extraction du numéro unique de ChatRoom
-        String newChatRoomID = firstPayload.getChatRoomID();
+        String newConnectingUserID = firstPayload.getUserSourceID();
+        String newChatRoomID = Configuration.USER_UNIQUE_ID + "-" + newConnectingUserID;
 
         return newChatRoomID;
     }
