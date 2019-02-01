@@ -31,7 +31,30 @@ Panneau de Droite
 - Boutton Download : permet de choisir l'emplacement où déposer le fichier reçu
 
 
-III - Etat de fonctionnement au 31/01/2019
+III - Constitution du Programme
+
+1) Launcher ---> Lance le programme principal
+
+Package - MODEL
+2) AuthorizedUserHandler ---> décrit les getter/setter du type de données liées à la BDD d'authentification
+3) Configuration ---> décrit toutes les variables rêglables par l'administrateur, ou devant être cohérentes au sein du programme
+4) PayloadDataHandler ---> décrit les méthodes de transformation de et vers le type PayloadHander
+5) PayloadHandler ---> décrit les getter/setter du type de données liés aux paquets TCP
+6) UserDataHandler ---> décrit les getter/setter du type de données liées aux utilisateurs pour le Multicast
+7) UserListHandler ---> décrit la méthode de création de la liste des utilisateurs connectés de type UserDataHandler pour le Multicast
+
+Package - NETWORK
+8) Multicast ---> décrit les méthode pour la création et la gestion du serveur Singleton (single thread) d'envoi/réception du Multicast
+9) TCPClient ---> décrit les méthode pour la création et la gestion de clients TCP instantiable (multi-threads)
+10) TCPServer ---> décrit les méthode pour la création et la gestion du serveur TCP Singleton (single thread)
+
+Package - VIEW
+11) ChatRoomTabFrameController ---> décrit les variables et méthodes liées à la forme standard du contenu d'un onglet de ChatRoom
+12) LoginFrameController ---> décrit les variables et méthodes liées à la fenêtre de Login
+13) MainFrameController ---> décrit les variables et méthodes liées à la fenêtre principal de discussion
+
+
+IV - Etat de fonctionnement au 31/01/2019
 
 Sont Fonctionnels:
 - la fenêtre de login (avec 2 identité codées en dure car pas de BDD) avec messages d'erreur de saisie, et le bouton X en haut à droite
@@ -48,6 +71,6 @@ Ne Sont Pas Fonctionnels:
 - Toute la partie droite (ormis pour l'envoi de message du TextField : les commandes et methodes sont écrites mais n'ont pas été testées pour les autres fonctionnalités du Client TCP)
 
 
-IV - Mises à Jour Fonctionnelle post 31/01/2019
+V - Mises à Jour Fonctionnelle post 31/01/2019
 
 Mises à jour datées:
